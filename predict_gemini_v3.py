@@ -4,10 +4,6 @@ import google.generativeai as genai
 from langgraph.graph import StateGraph
 from typing import TypedDict
 
-# 🔑 Set Gemini API Key
-GEMINI_API_KEY = "AIzaSyAfO20CQ88FcStXPhVHkmPmANd2wvAlbf8" #  # Replace with your API key
-genai.configure(api_key=GEMINI_API_KEY)
-
 # Define State Schema
 class PredictionState(TypedDict):
     name: str
