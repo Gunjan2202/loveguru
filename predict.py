@@ -12,7 +12,7 @@ class PredictionState(TypedDict):
     prediction: str
 
 # Initialize GPT-4 Model
-llm = ChatOpenAI(model="gpt-4o-mini", openai_api_key="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")
+llm = ChatOpenAI(model="gpt-4o-mini")
 
 
 # Function to calculate Zodiac Sign
