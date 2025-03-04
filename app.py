@@ -3,8 +3,9 @@ import streamlit as st
 import google.generativeai as genai
 from langgraph.graph import StateGraph
 from typing import TypedDict
-
-
+import os
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=GEMINI_API_KEY)
 # Define State Schema
 class PredictionState(TypedDict):
     name: str
