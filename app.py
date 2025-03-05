@@ -16,9 +16,6 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",  # Log format
 )
 
-# Log Streamlit app start
-logging.info("🔄 Astrology chatbot server started")
-
 # Define State Schema
 class PredictionState(TypedDict):
     name: str
@@ -61,8 +58,9 @@ def predict_relationship_future(state: PredictionState) -> PredictionState:
     prompt = (
         f"You are an expert astrologer. Based on name '{state['name']}', birth date '{state['dob']}', "
         f"place of birth '{state['place_of_birth']}', Zodiac '{state['zodiac_sign']}', "
-        f"and Numerology '{state['numerology_number']}', give a **short** prediction (3-4 lines) "
-        f"focusing ONLY on **love, marriage, and relationships**."
+        f"and Numerology '{state['numerology_number']}', give a **short** prediction (6-8 lines) "
+        f"focusing ONLY on **love, marriage, and relationships**. Keep your response funny and more in context of India"
+        f"try using bullet points and adding emojis wherever possible"
     )
     response = model.generate_content(prompt)
     state["prediction"] = response.text.strip()
@@ -186,6 +184,8 @@ if st.session_state.user_info:
             )
             response = model.generate_content(full_prompt)
             answer = response.text.strip()
+            # Log bot response
+            logging.info(f"🤖 Bot replied to {user_info['name']}: {answer}")
 
             # Save chat history
             st.session_state.chat_history.append({"role": "user", "text": chat_input})
