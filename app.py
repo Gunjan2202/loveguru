@@ -4,8 +4,21 @@ import google.generativeai as genai
 from langgraph.graph import StateGraph
 from typing import TypedDict
 import os
+import logging
+
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
+
+# Configure logging
+logging.basicConfig(
+    filename="chatbot_logs.log",  # Log file name
+    level=logging.INFO,  # Log level
+    format="%(asctime)s - %(levelname)s - %(message)s",  # Log format
+)
+
+# Log Streamlit app start
+logging.info("🔄 Astrology chatbot server started")
+
 # Define State Schema
 class PredictionState(TypedDict):
     name: str
@@ -127,6 +140,8 @@ if st.session_state.user_info is None:
                     "dob": dob.strip(),
                     "place_of_birth": place_of_birth.strip(),
                 }
+                # Log user details
+                logging.info(f"👤 New user: {name}, DOB: {dob}, Place: {place_of_birth}")
                 # Run Prediction
                 initial_state = PredictionState(
                     name=name, dob=dob, place_of_birth=place_of_birth,
@@ -158,6 +173,8 @@ if st.session_state.user_info:
     chat_input = st.text_input("💬 Ask about your love life...")
     if st.button("🔍 Ask LoveGuru"):
         if chat_input:
+            # Log user query
+            logging.info(f"📩 {user_info['name']} asked: {chat_input}")
             model = genai.GenerativeModel("gemini-2.0-flash-001")  # 🔥 Fast response
             full_prompt = (
                 f"The user {user_info['name']} was born on {user_info['dob']} in {user_info['place_of_birth']}. "
